@@ -83,6 +83,9 @@ jobs:
           at: *usr_local_directory
       - attach_workspace:
           at: *working_directory
+      - add_ssh_keys:
+          fingerprints:
+            - "62:7d:a0:59:a2:39:c4:e1:66:98:1c:12:76:ac:72:ab"
       - deploy:
           name: Deploy to gh-pages
           command: |
