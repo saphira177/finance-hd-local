@@ -85,7 +85,7 @@ jobs:
           at: *working_directory
       - add_ssh_keys:
           fingerprints:
-            - "62:7d:a0:59:a2:39:c4:e1:66:98:1c:12:76:ac:72:ab"
+            - "a5:1a:8c:7f:50:b9:35:39:80:34:28:8c:fb:e4:1e:02"
       - deploy:
           name: Deploy to gh-pages
           command: |
