@@ -1,6 +1,6 @@
 module.exports = {
   baseUrl: process.env.NODE_ENV === 'production'
-    ? '/finance-hd/'
+    ? '/finance-hd-local/'
     : '/',
   chainWebpack: (config) => {
     config.plugins

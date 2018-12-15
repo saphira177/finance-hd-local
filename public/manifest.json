@@ -1,6 +1,6 @@
 {
-  "name": "finance-hd",
-  "short_name": "finance-hd",
+  "name": "finance-hd-local",
+  "short_name": "finance-hd-local",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
