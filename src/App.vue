@@ -34,5 +34,15 @@ export default {
       //
     };
   },
+  beforeCreate() {
+    const user = {
+      _id: 'dungla4',
+      groups: [
+        { _id: 'home1', admin: true },
+        { _id: 'home2', admin: false },
+      ],
+    };
+    this.$localStorage.set('user', JSON.stringify(user));
+  },
 };
 </script>
