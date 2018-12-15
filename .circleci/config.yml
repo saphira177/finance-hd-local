@@ -89,8 +89,8 @@ jobs:
       - deploy:
           name: Deploy to gh-pages
           command: |
-            git config user.email "ci@gmail.com"
-            git config user.name "CircleCI Deployment"
+            git config --global user.email "ci@gmail.com"
+            git config --global user.name "CircleCI Deployment"
             bash deploy.sh
 
 base-filters:
