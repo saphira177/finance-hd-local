@@ -1,0 +1,118 @@
+version: 2.1
+
+# Global anchors
+parameters:
+  default_docker_image: &default_docker_image node:8
+  paths:
+    - working_directory: &working_directory ~/finance-hd-local
+    - usr_local_directory: &usr_local_directory /usr/local
+  cache-keys:
+    - node_modules: &node_modules npm-cache-{{ checksum "yarn.lock" }}
+
+jobs:
+  # Prepare node_modules
+  prepare-node-modules:
+    working_directory: *working_directory
+    docker:
+      - image: *default_docker_image
+    steps:
+      - checkout
+      - restore_cache:
+          key: *node_modules
+      - run:
+          name: Install NPM packages
+          command: yarn
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - node_modules
+      - save_cache:
+          key: *node_modules
+          paths:
+            - node_modules
+
+  # Lint
+  lint:
+    working_directory: *working_directory
+    docker:
+      - image: *default_docker_image
+    steps:
+      - checkout
+      - attach_workspace:
+          at: *working_directory
+      - run:
+          name: Lint
+          command: yarn lint
+
+  # Run unit test cases and upload coverage results
+  test:
+    working_directory: *working_directory
+    docker:
+      - image: *default_docker_image
+    steps:
+      - checkout
+      - attach_workspace:
+          at: *working_directory
+      # - run:
+      #     name: Setup Code Climate test-reporter
+      #     command: |
+      #       curl -fsSL https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /usr/local/bin/cc-test-reporter
+      #       chmod +x /usr/local/bin/cc-test-reporter
+      # - run:
+      #     name: Run unit test cases
+      #     command: |
+      #       cc-test-reporter before-build
+      #       npm run test:coverage
+      # - run:
+      #     name: Upload test coverage result to Code Climate
+      #     command: |
+      #       cc-test-reporter format-coverage -t lcov
+      #       cc-test-reporter upload-coverage
+      - run:
+          name: Run unit test cases
+          command: yarn test:unit
+
+  # Deploy gh pages
+  deploy-gh-pages:
+    working_directory: *working_directory
+    docker:
+      - image: *default_docker_image
+    steps:
+      - checkout
+      - attach_workspace:
+          at: *usr_local_directory
+      - attach_workspace:
+          at: *working_directory
+      - deploy:
+          name: Deploy to gh-pages
+          command: |
+            bash deploy.sh
+
+base-filters:
+  only-master: &only-master
+    branches:
+      only:
+        - master
+  require-lint-and-tests: &require-lint-and-tests
+    - lint
+    - test
+
+workflows:
+  build:
+    jobs:
+      - prepare-node-modules
+
+      - lint:
+          requires:
+            - prepare-node-modules
+
+      - test:
+          requires:
+            - prepare-node-modules
+
+      - deploy-gh-pages:
+          filters:
+            <<: *only-master
+          requires:
+            - lint
+            - test
