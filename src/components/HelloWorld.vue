@@ -141,7 +141,7 @@ export default {
   }),
   computed: {
     author() {
-      return this.$localStorage.get('author');
+      return this.$store.getters.loggedInUser.name;
     },
   },
 };
