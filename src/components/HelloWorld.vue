@@ -10,6 +10,7 @@
           class="my-3"
           contain
           height="200"
+          @click="addGroup"
         ></v-img>
       </v-flex>
 
@@ -142,6 +143,11 @@ export default {
   computed: {
     author() {
       return this.$store.getters.loggedInUser.name;
+    },
+  },
+  methods: {
+    addGroup() {
+      this.$store.dispatch('addGroup', { _id: 'test', name: 'group test' });
     },
   },
 };
