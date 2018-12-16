@@ -1,7 +1,14 @@
 /* eslint-disable no-param-reassign */
 export default {
   state: {
-    user: {},
+    user: {
+      _id: 'dungla4',
+      name: 'Le Anh Dung',
+      groups: [
+        { _id: 'group1', admin: true },
+        { _id: 'group2', admin: false },
+      ],
+    },
   },
   mutations: {
     saveUser(state, user) {
