@@ -1,4 +1,24 @@
 /* eslint-disable no-param-reassign */
+import _, { find, map } from 'lodash';
+
+export const mutations = {
+  update(state, user) {
+    state.user = { ...state.user, ...user };
+  },
+};
+
+export const getters = {
+  loggedInUser: state => state.user,
+  userName: state => state.user.name,
+  listGroup: state => map(state.user.groups, '_id'),
+  listAdminGroup: state => _.chain(state.user.groups)
+    .filter({ admin: true })
+    .map('_id')
+    .value(),
+  isAdminOfGroup:
+    state => groupId => find(state.user.groups, { _id: groupId, admin: true }) !== undefined,
+};
+
 export default {
   state: {
     user: {
@@ -10,11 +30,7 @@ export default {
       ],
     },
   },
-  mutations: {
-    saveUser(state, user) {
-      state.user = user;
-    },
-  },
+  mutations,
   actions: {
     saveUser(context, user) {
       context.commit('saveUser', user);
@@ -23,8 +39,5 @@ export default {
       context.commit('saveUser', {});
     },
   },
-  getters: {
-    loggedInUser: state => state.user,
-    loggedInUserId: state => state.user._id,
-  },
+  getters,
 };
