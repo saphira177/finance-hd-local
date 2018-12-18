@@ -1,10 +1,10 @@
 <template>
-  <v-timeline>
+  <v-timeline dense>
     <v-timeline-item
       v-for="item in items"
       :key="item._id"
       color="red lighten-2"
-      large
+      small
     >
       <span slot="opposite">{{item.date}}</span>
       <v-card class="elevation-2">
