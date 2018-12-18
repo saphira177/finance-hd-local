@@ -2,23 +2,47 @@
   <v-app>
     <v-toolbar dark color="primary" app>
       <v-toolbar-side-icon @click="toggleMenu"></v-toolbar-side-icon>
-      <v-toolbar-title class="white--text">{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title class="white--text">FINANCE HD</v-toolbar-title>
     </v-toolbar>
     <v-navigation-drawer v-model="open" app>
       <v-list dense class="pt-3">
-        <v-list-tile
-          v-for="item in menu"
-          :key="item.title"
-          :to="item.to"
-        >
+        <v-list-tile to="/">
           <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>home</v-icon>
           </v-list-tile-action>
-
           <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            <v-list-tile-title>Home</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-group
+          prepend-icon="event"
+          no-action
+        >
+          <v-list-tile slot="activator">
+            <v-list-tile-content>
+              <v-list-tile-title>All groups</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile
+            v-for="subItem in allGroups"
+            :key="subItem.name"
+            :to="`/groups/${subItem._id}`"
+          >
+            <v-list-tile-content>
+              <v-list-tile-title>{{ subItem.name }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
+
+        <v-list-tile to="/about">
+          <v-list-tile-action>
+            <v-icon>spa</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>About</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -35,29 +59,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'App',
   components: {
   },
   data() {
     return {
-      menu: [
-        { title: 'Home', icon: 'home', to: '/' },
-        { title: 'Group 1', icon: 'spa', to: '/groups/group1' },
-        { title: 'About', icon: 'spa', to: '/about' },
-      ],
       open: false,
     };
   },
   computed: {
-    title() {
-      const active = this.menu.filter(item => item.to === this.$route.path);
-      let title = '';
-      if (active.length > 0) {
-        [{ title }] = active;
-      }
-      return title;
-    },
+    ...mapGetters(['allGroups']),
   },
   beforeCreate() {
     // App before
