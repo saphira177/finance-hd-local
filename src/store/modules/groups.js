@@ -35,8 +35,8 @@ export const getters = {
 export default {
   state: {
     groups: [
-      { _id: 'group1', name: 'Rent', total: 5000 },
-      { _id: 'group2', name: 'Monthly', total: 18000 },
+      { _id: 'group1', name: 'Monthly', available: 15700 },
+      { _id: 'group2', name: 'Rent', available: 12745 },
     ],
   },
   mutations,

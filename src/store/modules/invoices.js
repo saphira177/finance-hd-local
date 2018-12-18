@@ -48,16 +48,22 @@ export default {
   state: {
     invoices: [
       {
-        _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, group: 'group1', user: 'dungla4',
+        _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, date: '2018-12-01T09:00:00+07:00', group: 'group1', user: 'dungla4',
       },
       {
-        _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, group: 'group1', user: 'dungla4',
+        _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-02T09:00:00+07:00', group: 'group1', user: 'dungla4',
       },
       {
-        _id: 'in3', name: 'Invoice 3', category: 'market', type: 'out', number: 425, group: 'group2', user: 'dungla4',
+        _id: 'in3', name: 'Invoice 3', category: 'market', type: 'out', number: 425, date: '2018-12-11T09:00:00+07:00', group: 'group2', user: 'dungla4',
       },
       {
-        _id: 'in4', name: 'Invoice 4', category: 'electric', type: 'out', number: 1830, group: 'group2', user: 'dungla4',
+        _id: 'in4', name: 'Invoice 4', category: 'electric', type: 'out', number: 1830, date: '2018-12-17T09:00:00+07:00', group: 'group2', user: 'dungla4',
+      },
+      {
+        _id: 'in5', name: 'Invoice 5', category: 'salary', type: 'in', number: 18000, date: '2018-12-01T08:00:00+07:00', group: 'group1', user: 'dungla4',
+      },
+      {
+        _id: 'in6', name: 'Invoice 6', category: 'rent', type: 'in', number: 15000, date: '2018-12-04T09:00:00+07:00', group: 'group2', user: 'dungla4',
       },
     ],
   },
