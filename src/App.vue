@@ -43,6 +43,7 @@ export default {
     return {
       menu: [
         { title: 'Home', icon: 'home', to: '/' },
+        { title: 'Group 1', icon: 'spa', to: '/groups/group1' },
         { title: 'About', icon: 'spa', to: '/about' },
       ],
       open: false,
