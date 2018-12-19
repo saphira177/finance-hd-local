@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import Groups from './views/Groups.vue';
-import GroupInvoice from './views/GroupInvoice.vue';
+import Group from './views/Group.vue';
 
 Vue.use(Router);
 
@@ -14,14 +13,9 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/groups',
-      name: 'group',
-      component: Groups,
-    },
-    {
       path: '/groups/:groupId',
-      name: 'groupInvoice',
-      component: GroupInvoice,
+      name: 'group-detail',
+      component: Group,
     },
     {
       path: '/about',
