@@ -157,5 +157,27 @@ describe('invoices module', () => {
         expect(getters.totalOutcome(state)('group1')).toEqual(0);
       });
     });
+
+    describe('outcomeByCategory', () => {
+      it('should calculate outcome by categories', () => {
+        const vuexGetters = {
+          invoicesByGroup: jest.fn().mockReturnValue([
+            {
+              _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, group: 'group1', user: 'dungla4',
+            },
+            {
+              _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, group: 'group1', user: 'dungla4',
+            },
+            {
+              _id: 'in3', name: 'Invoice 3', category: 'market', type: 'out', number: 2500, group: 'group1', user: 'dungla4',
+            },
+          ]),
+        };
+        expect(getters.outcomeByCategory(state, vuexGetters)('group1')).toEqual({
+          study: 2300,
+          market: 2500,
+        });
+      });
+    });
   });
 });
