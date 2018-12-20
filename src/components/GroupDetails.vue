@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{item.name}} - Remains: {{outcomeCurrency(item.available)}}</p>
+    <p>{{item.name}} - {{toCurrency(item.available)}}</p>
     <v-list>
       <v-list-tile
         v-for="(outcome, category) in outcomes"
@@ -10,7 +10,7 @@
           <v-list-tile-title>{{category}}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-list-tile-action-text>{{outcomeCurrency(outcome)}}</v-list-tile-action-text>
+          <v-list-tile-action-text>{{toCurrency(outcome)}}</v-list-tile-action-text>
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
@@ -21,9 +21,18 @@
 import { displayMoney } from '@/utils/decorators';
 
 export default {
-  props: ['item', 'outcomes'],
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+    outcomes: {
+      type: Object,
+      defaut: () => ({}),
+    },
+  },
   methods: {
-    outcomeCurrency(outcome) {
+    toCurrency(outcome) {
       return displayMoney(outcome);
     },
   },

@@ -1,13 +1,17 @@
 <template>
-  <HelloWorld />
+  <GroupList :items="allGroups"/>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld.vue';
+import { mapGetters } from 'vuex';
+import GroupList from '../components/GroupList.vue';
 
 export default {
   components: {
-    HelloWorld,
+    GroupList,
+  },
+  computed: {
+    ...mapGetters(['allGroups']),
   },
 };
 </script>

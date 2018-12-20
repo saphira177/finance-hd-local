@@ -1,24 +1,29 @@
 <template>
-  <div>
-    <!-- <GroupDetail
-      v-for="group in groups"
-      :key="group._id"
-      :item="group"
-    ></GroupDetail> -->
-  </div>
+  <v-list>
+    <v-list-tile
+      v-for="item in items"
+      :key="item._id"
+      :to="`/groups/${item._id}`"
+    >
+      <v-list-tile-content>
+        <v-list-tile-title>{{item.name}}</v-list-tile-title>
+      </v-list-tile-content>
+      <v-list-tile-action>
+        <v-list-tile-action-text>{{toCurrency(item.available)}}</v-list-tile-action-text>
+      </v-list-tile-action>
+    </v-list-tile>
+  </v-list>
 </template>
 
 <script>
-// import GroupDetail from './GroupDetail.vue';
+import { displayMoney } from '@/utils/decorators';
 
 export default {
-  components: {
-    // GroupDetail,
-  },
-  props: ['groups'],
-  data() {
-    return {
-    };
+  props: ['items'],
+  methods: {
+    toCurrency(number) {
+      return displayMoney(number);
+    },
   },
 };
 </script>
