@@ -1,48 +1,53 @@
+// @flow
 /* eslint-disable no-param-reassign */
 import uuidv1 from 'uuid/v1';
 import _, { findIndex } from 'lodash';
 
 export const mutations = {
-  add(state, invoice) {
+  add(state: State, invoice: Invoice) {
     state.invoices.push(invoice);
   },
-  update(state, invoice) {
+  update(state: State, invoice: Invoice) {
     const index = findIndex(state.invoices, { _id: invoice._id });
     if (index > -1) {
       const updatingInvoice = { ...state.invoices[index], ...invoice };
       state.invoices.splice(index, 1, updatingInvoice);
     }
   },
-  remove(state, invoiceId) {
+  remove(state: State, invoiceId: string) {
     state.invoices = state.invoices.filter(i => i._id !== invoiceId);
   },
 };
 
 export const actions = {
-  addInvoice(context, invoice) {
+  addInvoice(context: Context, invoice: Invoice) {
     const invoiceWithId = { ...invoice, _id: uuidv1() };
     context.commit('add', invoiceWithId);
   },
-  updateInvoice(context, invoice) {
+  updateInvoice(context: Context, invoice: Invoice) {
     context.commit('update', invoice);
   },
-  removeInvoice(context, invoiceId) {
+  removeInvoice(context: Context, invoiceId: string) {
     context.commit('remove', invoiceId);
   },
 };
 
-const calculate = (invoices, group, type, category) => _.chain(invoices)
-  .filter(category ? { group, type, category } : { group, type })
-  .map('number')
-  .reduce((sum, i) => sum + i)
-  .value()
-  || 0;
+const calculate = (invoices: Array<Invoice>, group: string, type: IType, category?: string) => (
+  _.chain(invoices)
+    .filter(category ? { group, type, category } : { group, type })
+    .map('number')
+    .reduce((sum, i) => sum + i)
+    .value()
+    || 0
+);
 
 export const getters = {
-  invoicesByGroup: state => group => state.invoices.filter(i => i.group === group),
-  totalIncome: state => group => calculate(state.invoices, group, 'in'),
-  totalOutcome: state => group => calculate(state.invoices, group, 'out'),
-  outcomeByCategory: (state, vuexGetters) => (group) => {
+  invoicesByGroup: (state: State) => (group: string): Array<Invoice> => (
+    state.invoices.filter(i => i.group === group)
+  ),
+  totalIncome: (state: State) => (group: string) => calculate(state.invoices, group, 'in'),
+  totalOutcome: (state: State) => (group: string) => calculate(state.invoices, group, 'out'),
+  outcomeByCategory: (state: State, vuexGetters: any) => (group: string) => {
     const outcomes = {};
     const invoices = vuexGetters.invoicesByGroup(group);
     const categories = _.chain(invoices)

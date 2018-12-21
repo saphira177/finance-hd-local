@@ -4,8 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
+    "plugin:flowtype/recommended",
     'plugin:vue/essential',
     '@vue/airbnb',
+  ],
+  "plugins": [
+    "flowtype",
   ],
   rules: {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',

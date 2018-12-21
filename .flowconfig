@@ -1,0 +1,13 @@
+[include]
+src/
+tests/
+
+[ignore]
+dist/.*
+
+[libs]
+./custom-libdefs
+
+[options]
+module.file_ext=.js
+module.file_ext=.vue

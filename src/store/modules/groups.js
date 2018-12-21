@@ -1,35 +1,36 @@
+// @flow
 /* eslint-disable no-param-reassign */
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
 
 export const mutations = {
-  add(state, group) {
+  add(state: State, group: Group) {
     state.groups.push(group);
   },
-  update(state, group) {
+  update(state: State, group: Group) {
     const index = findIndex(state.groups, { _id: group._id });
     if (index > -1) {
       const updatingGroup = { ...state.groups[index], ...group };
       state.groups.splice(index, 1, updatingGroup);
     }
   },
-  remove(state, groupId) {
+  remove(state: State, groupId: string) {
     state.groups = state.groups.filter(g => g._id !== groupId);
   },
 };
 
 export const actions = {
-  addGroup(context, group) {
+  addGroup(context: Context, group: Group) {
     context.commit('add', group);
   },
-  removeGroup(context, groupId) {
+  removeGroup(context: Context, groupId: string) {
     context.commit('remove', groupId);
   },
 };
 
 export const getters = {
-  allGroups: state => state.groups,
-  group: state => id => find(state.groups, g => g._id === id),
+  allGroups: (state: State) => state.groups,
+  group: (state: State) => (id: string) => find(state.groups, g => g._id === id),
 };
 
 export default {

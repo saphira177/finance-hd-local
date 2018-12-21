@@ -18,7 +18,10 @@
 </template>
 
 <script>
+/* @flow */
 import { displayMoney } from '@/utils/decorators';
+
+const t = (a: number): number => 'a';
 
 export default {
   props: {
