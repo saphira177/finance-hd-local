@@ -1,22 +1,22 @@
-/* eslint-disable no-param-reassign */
 import _, { find, map } from 'lodash';
 
 export const mutations = {
-  update(state, user) {
+  update(state: State, user: User) {
     state.user = { ...state.user, ...user };
   },
 };
 
 export const getters = {
-  loggedInUser: state => state.user,
-  userName: state => state.user.name,
-  listGroup: state => map(state.user.groups, '_id'),
-  listAdminGroup: state => _.chain(state.user.groups)
+  loggedInUser: (state: State) => state.user,
+  userName: (state: State) => state.user.name,
+  listGroup: (state: State) => map(state.user.groups, '_id'),
+  listAdminGroup: (state: State) => _.chain(state.user.groups)
     .filter({ admin: true })
     .map('_id')
     .value(),
-  isAdminOfGroup:
-    state => groupId => find(state.user.groups, { _id: groupId, admin: true }) !== undefined,
+  isAdminOfGroup: (state: State) => (groupId: string) => (
+    find(state.user.groups, { _id: groupId, admin: true }) !== undefined
+  ),
 };
 
 export default {
@@ -32,10 +32,10 @@ export default {
   },
   mutations,
   actions: {
-    saveUser(context, user) {
+    saveUser(context: Context, user: User) {
       context.commit('saveUser', user);
     },
-    removeUser(context) {
+    removeUser(context: Context) {
       context.commit('saveUser', {});
     },
   },
