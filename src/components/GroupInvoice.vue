@@ -17,20 +17,11 @@
   </v-timeline>
 </template>
 
-<script>
-// import { displayMoney } from '@/utils/decorators';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
-export default {
-  props: ['items'],
-  data() {
-    return {
-
-    };
-  },
-  // computed: {
-  //   available() {
-  //     return displayMoney(this.item.available);
-  //   },
-  // },
-};
+@Component
+export default class GroupInvoice extends Vue {
+  @Prop() public items: Invoice[] = [];
+}
 </script>

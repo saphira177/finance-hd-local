@@ -20,39 +20,15 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { displayMoney } from '@/utils/decorators';
+import { defaultGroup } from '@/constant/defaultValue';
 
-@Component({
-  props: {
-    item: Object,
-  },
-})
+@Component
 export default class GroupDetails extends Vue {
-  @Prop() private outcomes: Object = {};
+  @Prop() public item: Group = { ...defaultGroup };
+  @Prop() public outcomes: OutcomeCategories = {};
 
-  toCurrency(outcome: number): string {
+  public toCurrency(outcome: number): string {
     return displayMoney(outcome);
   }
-
-  a() {
-    this.outcomes = {};
-  }
 }
-
-// export default {
-//   props: {
-//     item: {
-//       type: Object,
-//       default: () => ({}),
-//     },
-//     outcomes: {
-//       type: Object,
-//       defaut: () => ({}),
-//     },
-//   },
-//   methods: {
-//     toCurrency(outcome) {
-//       return displayMoney(outcome);
-//     },
-//   },
-// };
 </script>

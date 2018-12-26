@@ -2,16 +2,20 @@
   <GroupList :items="allGroups"/>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import GroupList from '../components/GroupList.vue';
 
-export default {
+@Component({
   components: {
     GroupList,
   },
   computed: {
     ...mapGetters(['allGroups']),
   },
-};
+})
+export default class Home extends Vue {
+  public allGroups!: Group[];
+}
 </script>
