@@ -48,6 +48,49 @@
       </v-list>
     </v-navigation-drawer>
 
+    <v-speed-dial app
+      fixed
+      v-model="fab"
+      bottom right
+      direction="left"
+      transition="scale-transition"
+    >
+      <v-btn
+        slot="activator"
+        v-model="fab"
+        color="blue darken-2"
+        dark
+        fab
+      >
+        <v-icon>add</v-icon>
+        <v-icon>close</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="green"
+      >
+        <v-icon>edit</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="indigo"
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="red"
+      >
+        <v-icon>delete</v-icon>
+      </v-btn>
+    </v-speed-dial>
+
     <v-content>
       <v-container fluid>
         <v-fade-transition mode="out-in">
@@ -68,6 +111,7 @@ export default {
   data() {
     return {
       open: false,
+      fab: false,
     };
   },
   computed: {
@@ -83,3 +127,6 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+</style>
