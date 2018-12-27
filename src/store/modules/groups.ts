@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
 
@@ -13,7 +14,7 @@ export const mutations = {
     }
   },
   remove(state: State, groupId: string) {
-    state.groups = state.groups.filter((g) => g._id !== groupId);
+    state.groups = state.groups.filter(g => g._id !== groupId);
   },
 };
 
@@ -28,7 +29,7 @@ export const actions = {
 
 export const getters = {
   allGroups: (state: State) => state.groups,
-  group: (state: State) => (id: string) => find(state.groups, (g) => g._id === id),
+  group: (state: State) => (id: string) => find(state.groups, g => g._id === id),
 };
 
 export default {

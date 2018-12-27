@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import uuidv1 from 'uuid/v1';
 import _, { findIndex } from 'lodash';
 
@@ -13,7 +14,7 @@ export const mutations = {
     }
   },
   remove(state: State, invoiceId: string) {
-    state.invoices = state.invoices.filter((i) => i._id !== invoiceId);
+    state.invoices = state.invoices.filter(i => i._id !== invoiceId);
   },
 };
 
@@ -44,7 +45,7 @@ const calculate = (
 
 export const getters = {
   invoicesByGroup: (state: State) => (group: string) => (
-    state.invoices.filter((i) => i.group === group)
+    state.invoices.filter(i => i.group === group)
   ),
   totalIncome: (state: State) => (group: string) => calculate(state.invoices, group, 'in'),
   totalOutcome: (state: State) => (group: string) => calculate(state.invoices, group, 'out'),

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import _, { find, map } from 'lodash';
 
 export const mutations = {

@@ -23,8 +23,8 @@ interface Invoice {
   user: string;
 }
 
-interface OutcomeCategories = {
-  [key: string]; : number, ;
+interface OutcomeCategories {
+  [key: string] : number;
 }
 
 interface State {

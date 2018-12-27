@@ -1,4 +1,4 @@
-export const defaultGroup: Group = {
+export const defaultGroup = {
   _id: '',
   name: '',
   available: 0,
