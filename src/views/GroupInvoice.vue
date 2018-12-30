@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
 import GroupInvoice from '@/components/GroupInvoice.vue';
 
@@ -11,13 +12,8 @@ import GroupInvoice from '@/components/GroupInvoice.vue';
   components: {
     GroupInvoice,
   },
-  computed: {
-    ...mapGetters([
-      'invoicesByGroup',
-    ]),
-  },
 })
 export default class GroupInvoiceView extends Vue {
-  public invoiceByGroup!: any;
+  @Getter('invoicesByGroup') invoicesByGroup!: Function;
 }
 </script>

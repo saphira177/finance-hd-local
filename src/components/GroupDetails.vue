@@ -23,7 +23,9 @@ import { displayMoney } from '@/utils/decorators';
 
 @Component
 export default class GroupDetails extends Vue {
-  @Prop() public item!: Group;
+  @Prop({
+    default: () => ({ _id: '', name: '', available: -1 }),
+  }) public item!: Group;
   @Prop() public outcomes!: OutcomeCategories;
 
   public toCurrency(outcome: number): string {

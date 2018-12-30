@@ -22,6 +22,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class GroupInvoice extends Vue {
-  @Prop() public items!: Invoice[];
+  @Prop({ default: () => [] }) public items!: Invoice[];
 }
 </script>

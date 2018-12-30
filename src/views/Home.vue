@@ -4,18 +4,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
 import GroupList from '../components/GroupList.vue';
+
+const namespace = 'groups';
 
 @Component({
   components: {
     GroupList,
   },
-  computed: {
-    ...mapGetters(['allGroups']),
-  },
 })
 export default class Home extends Vue {
-  public allGroups!: Group[];
+  @Getter('allGroups') allGroups!: Array<Group>;
 }
 </script>

@@ -1,10 +1,8 @@
 import { findIndex, map } from 'lodash';
 import {
-  actions,
   getters,
   mutations,
 } from '@/store/modules/invoices';
-import { Commit, ActionContext } from 'vuex';
 
 describe('invoices module', () => {
   let state: InvoiceState;
@@ -63,44 +61,6 @@ describe('invoices module', () => {
       });
     });
   });
-
-  // describe('actions', () => {
-  //   let commit: Commit;
-
-  //   beforeEach(() => {
-  //     commit = jest.fn();
-  //   });
-
-  //   describe('addInvoice', () => {
-  //     it.only('should commit add event with invoice', () => {
-  //       console.log(actions.addInvoice);
-  //       actions.addInvoice({ commit }, { name: 'New Invoice' });
-  //       expect(commit).toHaveBeenCalledWith(
-  //         'add',
-  //         expect.objectContaining({
-  //           name: 'New Invoice',
-  //         }),
-  //       );
-  //     });
-  //   });
-
-  //   describe('updateInvoice', () => {
-  //     it('should commit update event with invoice', () => {
-  //       // actions.updateInvoice({ commit }, { _id: 'in1', name: 'Updated Invoice ' });
-  //       expect(commit).toHaveBeenCalledWith(
-  //         'update',
-  //         { _id: 'in1', name: 'Updated Invoice ' },
-  //       );
-  //     });
-  //   });
-
-  //   describe('removeInvoice', () => {
-  //     it('should commit remove event with invoice id', () => {
-  //       // actions.removeInvoice({ commit }, 'invoice1');
-  //       expect(commit).toHaveBeenCalledWith('remove', 'invoice1');
-  //     });
-  //   });
-  // });
 
   describe('getters', () => {
     describe('invoicesByGroup', () => {

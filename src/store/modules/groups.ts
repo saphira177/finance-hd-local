@@ -32,7 +32,7 @@ export const mutations: MutationTree<GroupState> = {
 };
 
 export const actions: ActionTree<GroupState, RootState> = {
-  addGroup(context, group: Group): any {
+  addGroup(context, group: any) {
     context.commit('add', group);
   },
   removeGroup(context, groupId: string) {
@@ -41,7 +41,9 @@ export const actions: ActionTree<GroupState, RootState> = {
 };
 
 export const getters: GetterTree<GroupState, RootState> = {
-  allGroups: state => state.groups,
+  allGroups(state): Array<Group> {
+    return state.groups;
+  },
   group: state => (id: string) => find(state.groups, g => g._id === id),
 };
 
