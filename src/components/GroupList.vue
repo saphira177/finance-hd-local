@@ -26,9 +26,5 @@ export default class GroupList extends Vue {
   public toCurrency(money: number) {
     return displayMoney(money);
   }
-
-  public a(): number {
-    return 'a';
-  }
 }
 </script>
