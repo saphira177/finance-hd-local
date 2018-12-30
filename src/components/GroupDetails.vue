@@ -20,12 +20,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { displayMoney } from '@/utils/decorators';
-import { defaultGroup } from '@/constant/defaultValue';
 
 @Component
 export default class GroupDetails extends Vue {
-  @Prop() public item: Group = { ...defaultGroup };
-  @Prop() public outcomes: OutcomeCategories = {};
+  @Prop() public item!: Group;
+  @Prop() public outcomes!: OutcomeCategories;
 
   public toCurrency(outcome: number): string {
     return displayMoney(outcome);

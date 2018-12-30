@@ -1,15 +1,27 @@
 type IType = 'in' | 'out';
 
+interface RootState {
+  version: string;
+}
+
 interface User {
   _id: string;
   name: string;
   groups: any;
 }
 
+interface UserState {
+  user: User;
+}
+
 interface Group {
   _id: string;
   name: string;
   available: number;
+}
+
+interface GroupState {
+  groups: Array<Group>;
 }
 
 interface Invoice {
@@ -23,16 +35,11 @@ interface Invoice {
   user: string;
 }
 
+interface InvoiceState {
+  invoices: Array<Invoice>;
+}
+
+
 interface OutcomeCategories {
   [key: string] : number;
-}
-
-interface State {
-  groups: Group[];
-  invoices: Invoice[];
-  user: User;
-}
-
-interface Context {
-  commit(action: string, params?: any): void;
 }

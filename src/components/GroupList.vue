@@ -21,7 +21,7 @@ import { displayMoney } from '@/utils/decorators';
 
 @Component
 export default class GroupList extends Vue {
-  @Prop() public items: Group[] = [];
+  @Prop() public items!: Group[];
 
   public toCurrency(money: number) {
     return displayMoney(money);
