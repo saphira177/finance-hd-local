@@ -17,24 +17,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { displayMoney } from '@/utils/decorators';
 
-export default {
-  props: {
-    item: {
-      type: Object,
-      default: () => ({}),
-    },
-    outcomes: {
-      type: Object,
-      defaut: () => ({}),
-    },
-  },
-  methods: {
-    toCurrency(outcome) {
-      return displayMoney(outcome);
-    },
-  },
-};
+@Component
+export default class GroupDetails extends Vue {
+  @Prop({
+    default: () => ({ _id: '', name: '', available: -1 }),
+  }) public item!: Group;
+  @Prop() public outcomes!: OutcomeCategories;
+
+  public toCurrency(outcome: number): string {
+    return displayMoney(outcome);
+  }
+}
 </script>

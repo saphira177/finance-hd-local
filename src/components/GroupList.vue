@@ -15,15 +15,16 @@
   </v-list>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { displayMoney } from '@/utils/decorators';
 
-export default {
-  props: ['items'],
-  methods: {
-    toCurrency(number) {
-      return displayMoney(number);
-    },
-  },
-};
+@Component
+export default class GroupList extends Vue {
+  @Prop({ default: () => [] }) public items!: Group[];
+
+  public toCurrency(money: number) {
+    return displayMoney(money);
+  }
+}
 </script>

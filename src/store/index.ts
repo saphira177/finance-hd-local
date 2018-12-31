@@ -7,7 +7,10 @@ import invoices from './modules/invoices';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export default new Vuex.Store<RootState>({
+  state: {
+    version: '0.1.0',
+  },
   modules: {
     users,
     groups,

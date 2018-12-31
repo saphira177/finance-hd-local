@@ -5,19 +5,19 @@
   ></GroupDetails>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
 import GroupDetails from '@/components/GroupDetails.vue';
 
-export default {
+@Component({
   components: {
     GroupDetails,
   },
-  computed: {
-    ...mapGetters([
-      'group',
-      'outcomeByCategory',
-    ]),
-  },
-};
+})
+export default class Group extends Vue {
+  @Getter('group') group!: Function;
+  @Getter('outcomeByCategory') outcomeByCategory!: Function;
+}
 </script>

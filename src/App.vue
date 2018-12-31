@@ -101,31 +101,21 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
 
-export default {
-  name: 'App',
-  components: {
-  },
-  data() {
-    return {
-      open: false,
-      fab: false,
-    };
-  },
-  computed: {
-    ...mapGetters(['allGroups']),
-  },
-  beforeCreate() {
-    // App before
-  },
-  methods: {
-    toggleMenu() {
-      this.open = !this.open;
-    },
-  },
-};
+@Component
+export default class App extends Vue {
+  open: boolean = false;
+  fab: boolean = false;
+  @Getter('allGroups') allGroups!: Array<Group>;
+
+  toggleMenu() {
+    this.open = !this.open;
+  }
+}
 </script>
 
 <style scoped>

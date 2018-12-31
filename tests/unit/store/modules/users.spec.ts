@@ -10,7 +10,7 @@ const {
 } = getters;
 
 describe('users module', () => {
-  let state;
+  let state: UserState;
   beforeEach(() => {
     state = {
       user: {
@@ -52,34 +52,40 @@ describe('users module', () => {
   describe('getters', () => {
     describe('loggedInUser', () => {
       it('should return user in state', () => {
+        // @ts-ignore
         expect(loggedInUser(state)).toEqual(state.user);
       });
     });
 
     describe('userName', () => {
       it('should return user name', () => {
+        // @ts-ignore
         expect(userName(state)).toEqual('User Test');
       });
     });
 
     describe('listGroup', () => {
       it('should return list id of groups', () => {
+        // @ts-ignore
         expect(listGroup(state)).toEqual(['group1', 'group2']);
       });
     });
 
     describe('listAdminGroup', () => {
       it('should return list id of admin groups', () => {
+        // @ts-ignore
         expect(listAdminGroup(state)).toEqual(['group1']);
       });
     });
 
     describe('isAdminOfGroup', () => {
       it('should return true if admin', () => {
+        // @ts-ignore
         expect(isAdminOfGroup(state)('group1')).toBe(true);
       });
 
       it('should return false if not admin', () => {
+        // @ts-ignore
         expect(isAdminOfGroup(state)('group2')).toBe(false);
       });
     });

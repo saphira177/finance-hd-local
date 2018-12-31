@@ -4,15 +4,16 @@ import {
   getters,
   mutations,
 } from '@/store/modules/groups';
+import { Commit, ActionContext } from 'vuex';
 
 describe('groups module', () => {
-  let state;
+  let state: GroupState;
 
   beforeEach(() => {
     state = {
       groups: [
-        { _id: 'group1', name: 'Rent', total: 5000 },
-        { _id: 'group2', name: 'Monthly', total: 18000 },
+        { _id: 'group1', name: 'Rent', available: 5000 },
+        { _id: 'group2', name: 'Monthly', available: 18000 },
       ],
     };
   });
@@ -29,7 +30,7 @@ describe('groups module', () => {
       it('should update existing item', () => {
         mutations.update(state, { _id: 'group2', name: 'Updated group 2' });
         expect(state.groups[1]).toEqual({
-          _id: 'group2', name: 'Updated group 2', total: 18000,
+          _id: 'group2', name: 'Updated group 2', available: 18000,
         });
       });
 
@@ -54,15 +55,15 @@ describe('groups module', () => {
   });
 
   describe('actions', () => {
-    let commit;
+    let commit: Commit;
     beforeEach(() => {
       commit = jest.fn();
     });
 
     describe('addGroup', () => {
       it('should commit add event', () => {
-        actions.addGroup({ commit }, { _id: 'newGroup' });
-        expect(commit).toHaveBeenCalledWith('add', { _id: 'newGroup' });
+        actions.addGroup({ commit }, { _id: 'newGroup', name: 'newGroup', available: 0 });
+        expect(commit).toHaveBeenCalledWith('add', { _id: 'newGroup', name: 'newGroup', available: 0 });
       });
     });
 
@@ -77,17 +78,19 @@ describe('groups module', () => {
   describe('getters', () => {
     describe('allGroups', () => {
       it('should list all groups', () => {
+        // @ts-ignore
         expect(getters.allGroups(state)).toEqual([
-          { _id: 'group1', name: 'Rent', total: 5000 },
-          { _id: 'group2', name: 'Monthly', total: 18000 },
+          { _id: 'group1', name: 'Rent', available: 5000 },
+          { _id: 'group2', name: 'Monthly', available: 18000 },
         ]);
       });
     });
 
     describe('group', () => {
       it('should return group by id', () => {
+        // @ts-ignore
         expect(getters.group(state)('group2')).toEqual(
-          { _id: 'group2', name: 'Monthly', total: 18000 },
+          { _id: 'group2', name: 'Monthly', available: 18000 },
         );
       });
     });

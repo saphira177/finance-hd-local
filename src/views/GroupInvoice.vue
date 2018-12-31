@@ -2,18 +2,18 @@
   <GroupInvoice :items="invoicesByGroup(this.$route.params.groupId)"></GroupInvoice>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
 import GroupInvoice from '@/components/GroupInvoice.vue';
 
-export default {
+@Component({
   components: {
     GroupInvoice,
   },
-  computed: {
-    ...mapGetters([
-      'invoicesByGroup',
-    ]),
-  },
-};
+})
+export default class GroupInvoiceView extends Vue {
+  @Getter('invoicesByGroup') invoicesByGroup!: Function;
+}
 </script>

@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, Wrapper } from '@vue/test-utils';
 import GroupDetails from '@/components/GroupDetails.vue';
 
 jest.mock('@/utils/decorators', () => ({
@@ -6,7 +6,7 @@ jest.mock('@/utils/decorators', () => ({
 }));
 
 describe('GroupDetails component', () => {
-  let wrapper;
+  let wrapper: Wrapper<GroupDetails>;
 
   beforeEach(() => {
     wrapper = shallowMount(GroupDetails);
