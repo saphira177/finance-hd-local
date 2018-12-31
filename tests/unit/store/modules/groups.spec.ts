@@ -54,6 +54,27 @@ describe('groups module', () => {
     });
   });
 
+  describe('actions', () => {
+    let commit: Commit;
+    beforeEach(() => {
+      commit = jest.fn();
+    });
+
+    describe('addGroup', () => {
+      it('should commit add event', () => {
+        actions.addGroup({ commit }, { _id: 'newGroup', name: 'newGroup', available: 0 });
+        expect(commit).toHaveBeenCalledWith('add', { _id: 'newGroup', name: 'newGroup', available: 0 });
+      });
+    });
+
+    describe('removeGroup', () => {
+      it('should commit add event', () => {
+        actions.removeGroup({ commit }, 'groupId');
+        expect(commit).toHaveBeenCalledWith('remove', 'groupId');
+      });
+    });
+  });
+
   describe('getters', () => {
     describe('allGroups', () => {
       it('should list all groups', () => {

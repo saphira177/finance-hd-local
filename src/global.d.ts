@@ -25,7 +25,7 @@ interface GroupState {
 }
 
 interface Invoice {
-  _id: string;
+  _id?: string;
   name: string;
   category: string;
   type: IType;

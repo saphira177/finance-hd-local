@@ -31,11 +31,11 @@ export const mutations: MutationTree<GroupState> = {
   },
 };
 
-export const actions: ActionTree<GroupState, RootState> = {
-  addGroup(context, group: any) {
+export const actions = {
+  addGroup(context: any, group: Group) {
     context.commit('add', group);
   },
-  removeGroup(context, groupId: string) {
+  removeGroup(context: any, groupId: string) {
     context.commit('remove', groupId);
   },
 };

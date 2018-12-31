@@ -50,15 +50,15 @@ export const mutations: MutationTree<InvoiceState> = {
   },
 };
 
-export const actions: ActionTree<InvoiceState, RootState> = {
-  addInvoice(context, invoice: Invoice) {
+export const actions = {
+  addInvoice(context: any, invoice: Invoice) {
     const invoiceWithId = { ...invoice, _id: uuidv1() };
     context.commit('add', invoiceWithId);
   },
-  updateInvoice(context, invoice: Invoice) {
+  updateInvoice(context: any, invoice: any) {
     context.commit('update', invoice);
   },
-  removeInvoice(context, invoiceId: string) {
+  removeInvoice(context: any, invoiceId: string) {
     context.commit('remove', invoiceId);
   },
 };
