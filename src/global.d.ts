@@ -1,5 +1,12 @@
 type IType = 'in' | 'out';
 
+interface IError {
+  name: string;
+  code: number;
+}
+
+type IStatus = '' | 'PENDING' | 'FULFILLED' | 'FINISHED';
+
 interface RootState {
   version: string;
 }
@@ -22,6 +29,9 @@ interface Group {
 
 interface GroupState {
   groups: Array<Group>;
+  groupError: IError;
+  loading: boolean;
+  status: IStatus;
 }
 
 interface Invoice {

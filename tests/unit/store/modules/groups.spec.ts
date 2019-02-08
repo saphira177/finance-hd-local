@@ -15,6 +15,9 @@ describe('groups module', () => {
         { _id: 'group1', name: 'Rent', available: 5000 },
         { _id: 'group2', name: 'Monthly', available: 18000 },
       ],
+      groupError: { name: '', code: -1 },
+      loading: false,
+      status: '',
     };
   });
 
@@ -62,7 +65,7 @@ describe('groups module', () => {
 
     describe('addGroup', () => {
       it('should commit add event', () => {
-        actions.addGroup({ commit }, { _id: 'newGroup', name: 'newGroup', available: 0 });
+        actions.addGroup({ commit, state }, { _id: 'newGroup', name: 'newGroup', available: 0 });
         expect(commit).toHaveBeenCalledWith('add', { _id: 'newGroup', name: 'newGroup', available: 0 });
       });
     });

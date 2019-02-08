@@ -99,6 +99,13 @@ export const getters: GetterTree<InvoiceState, RootState> = {
     });
     return outcomes;
   },
+  categories: state => (group: string, type: IType) => (
+    _.chain(state.invoices)
+      .filter({ group, type })
+      .map('category')
+      .uniq()
+      .value()
+  ),
 };
 
 export default <Module<InvoiceState, RootState>> {
