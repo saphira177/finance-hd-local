@@ -285,12 +285,8 @@ import {
 
 @Component
 export default class InvoiceDialog extends Vue {
-  @Prop({
-    default: () => [],
-  }) public allGroups!: Array<Group>;
+  @Getter allGroups!: Array<Group>;
   @Getter categories!: any;
-  @Getter loading!: boolean;
-  @Getter status!: IStatus;
   @Action addGroup!: ActionMethod;
   @Action addInvoice!: ActionMethod;
 

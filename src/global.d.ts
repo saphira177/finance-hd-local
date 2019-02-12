@@ -29,9 +29,6 @@ interface Group {
 
 interface GroupState {
   groups: Array<Group>;
-  groupError: IError;
-  loading: boolean;
-  status: IStatus;
 }
 
 interface Invoice {

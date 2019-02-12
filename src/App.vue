@@ -99,10 +99,7 @@
         </v-fade-transition>
       </v-container>
     </v-content>
-    <invoice-dialog
-      ref="invoiceDialog"
-      :allGroups="allGroups"
-    ></invoice-dialog>
+    <invoice-dialog ref="invoiceDialog"></invoice-dialog>
   </v-app>
 </template>
 
@@ -120,7 +117,6 @@ import InvoiceDialog from '@/components/InvoiceDialog.vue';
 export default class App extends Vue {
   open: boolean = false;
   fab: boolean = false;
-  @Getter('allGroups') allGroups!: Array<Group>;
 
   toggleMenu() {
     this.open = !this.open;
