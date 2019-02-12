@@ -19,7 +19,7 @@ export const getFromView = (val: string): number => (
 export const addDigit = (
   val: number,
   digit: number,
-): number => Number(`${val.toString()}${digit.toString()}`)
+): number => Number(`${val.toString()}${digit.toString()}`);
 
 export const deleteDigit = (
   val: number,

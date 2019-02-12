@@ -158,10 +158,11 @@
             <v-card>
               <v-container grid-list-xs>
                 <v-layout justify-center wrap>
-                  <v-flex xs12 sm6 md4>
+                  <v-flex xs12 sm5>
                     <v-dialog
                       ref="dateDialog"
                       v-model="modal"
+                      :close-on-content-click="false"
                       :return-value.sync="date"
                       persistent
                       lazy
@@ -175,18 +176,22 @@
                         prepend-icon="event"
                         readonly
                       ></v-text-field>
-                      <v-date-picker v-model="date" scrollable>
+                      <v-date-picker v-model="date" scrollable @input="$refs.dateDialog.save(date)">
                         <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-                        <v-btn flat color="primary" @click="$refs.dateDialog.save(date)">OK</v-btn>
+                        <v-btn
+                          flat
+                          color="primary"
+                          @click="$refs.dateDialog.save(today())"
+                        >Today</v-btn>
                       </v-date-picker>
                     </v-dialog>
                   </v-flex>
                   <v-spacer></v-spacer>
-                  <v-flex xs11 sm5>
+                  <v-flex xs12 sm5>
                     <v-dialog
                       ref="timeDialog"
                       v-model="modal2"
+                      :close-on-content-click="false"
                       :return-value.sync="time"
                       persistent
                       lazy
@@ -205,14 +210,22 @@
                         v-model="time"
                         format="24hr"
                         full-width
+                        @click:minute="$refs.timeDialog.save(time)"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="modal2 = false">Cancel</v-btn>
-                        <v-btn flat color="primary" @click="$refs.timeDialog.save(time)">OK</v-btn>
+                        <v-btn
+                          flat
+                          color="primary"
+                          @click="$refs.timeDialog.save(now())"
+                        >Now</v-btn>
                       </v-time-picker>
                     </v-dialog>
                   </v-flex>
                   <v-flex xs12>
+                    <v-btn
+                      color="primary"
+                      @click="date = today(); time = now()"
+                    >Now</v-btn>
                     <v-btn
                       :disabled="!isAllInformationComplete"
                       color="primary"
@@ -238,7 +251,7 @@
                     <v-btn
                       :disabled="!isAllInformationComplete"
                       color="primary"
-                      @click="addInvoice"
+                      @click="add"
                     >Complete</v-btn>
                   </v-flex>
                 </v-layout>
@@ -261,6 +274,7 @@ import {
 import { Action, Getter } from 'vuex-class';
 import { VForm } from '@/@types/vuetify/index.d';
 import { ActionMethod } from 'vuex';
+import moment from 'moment-timezone';
 import findIndex from 'lodash/findIndex';
 import {
   formatView,
@@ -278,6 +292,7 @@ export default class InvoiceDialog extends Vue {
   @Getter loading!: boolean;
   @Getter status!: IStatus;
   @Action addGroup!: ActionMethod;
+  @Action addInvoice!: ActionMethod;
 
   dialog: boolean = false;
   e1: string = '1';
@@ -285,13 +300,10 @@ export default class InvoiceDialog extends Vue {
   category: string = '';
   selectedGroup: string = '';
   selectedCategory: string = '';
-  newGroup: string = '';
-  invoiceValid: boolean = true;
   invoiceName: string = '';
   invoiceAmount: string = '';
   date = null;
   time = null;
-  menu2: boolean = false;
   modal: boolean = false;
   modal2: boolean = false;
 
@@ -307,8 +319,12 @@ export default class InvoiceDialog extends Vue {
     }
   }
 
+  get invoiceType() {
+    return this.type ? 'out' : 'in';
+  }
+
   get listCategories() {
-    return this.categories(this.selectedGroup, this.type ? 'out' : 'in');
+    return this.categories(this.selectedGroup, this.invoiceType);
   }
 
   get groupsCombobox() {
@@ -320,16 +336,6 @@ export default class InvoiceDialog extends Vue {
 
   get invoiceForm() {
     return this.$refs.invoiceForm as VForm;
-  }
-
-  get groupBtnText() {
-    let text = '';
-    if (this.status === 'FINISHED' || this.status === '') {
-      text = 'Continue';
-    } else {
-      text = 'Create';
-    }
-    return text;
   }
 
   get isSelectGroupComplete() {
@@ -364,23 +370,6 @@ export default class InvoiceDialog extends Vue {
       && this.isDateComplete;
   }
 
-  isExistedGroup(id: string) {
-    return findIndex(this.allGroups, { _id: id }) > -1;
-  }
-
-  selectGroup(groupId: string) {
-    this.selectedGroup = groupId;
-    this.e1 = '2';
-  }
-
-  createGroup() {
-    this.addGroup({
-      _id: this.newGroup.toLowerCase().replace(/ /g, '_'),
-      name: this.newGroup,
-      available: 0,
-    });
-  }
-
   inputAmount(val: number) {
     const amount = getFromView(this.invoiceAmount);
     const newAmount = addDigit(amount, val);
@@ -393,29 +382,44 @@ export default class InvoiceDialog extends Vue {
     this.invoiceAmount = formatView(newAmount);
   }
 
-  complete() {
+  today() {
+    return moment().format('YYYY-MM-DD');
+  }
+
+  now() {
+    return moment().format('HH:mm');
+  }
+
+  add() {
     this.dialog = false;
+    const invoice: Invoice = {
+      name: this.invoiceName,
+      category: this.selectedCategory,
+      type: this.invoiceType,
+      number: getFromView(this.invoiceAmount),
+      date: moment(this.invoiceDateTime).format(),
+      group: this.selectedGroup,
+    };
+    this.addInvoice(invoice);
   }
 
-  cancel() {
-    this.dialog = false;
-  }
-
-  next() {
-    if (this.invoiceForm.validate()) {
-      console.log('OK');
-      console.log(`name: ${this.invoiceName}`);
-      this.e1 = '3';
-    }
-  }
-
-  show() {
+  resetForm() {
     this.e1 = '1';
     this.type = true;
     this.category = '';
     this.selectedGroup = '';
+    this.selectedCategory = '';
+    this.invoiceName = '';
+    this.invoiceAmount = '';
+    this.date = null;
+    this.time = null;
+    this.modal = false;
+    this.modal2 = false;
+  }
+
+  show() {
+    this.resetForm();
     this.dialog = true;
-    // this.invoiceForm.reset();
   }
 }
 </script>

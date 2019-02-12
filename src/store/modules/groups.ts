@@ -20,16 +20,16 @@ export const initState: GroupState = {
 };
 
 export const mutations: MutationTree<GroupState> = {
-  setError(state, error: IError) {
+  setGroupError(state, error: IError) {
     state.groupError = { ...error };
   },
-  clearError(state) {
+  clearGroupError(state) {
     state.groupError = { name: '', code: -1 };
   },
-  setLoading(state, isLoading: boolean) {
+  setGroupLoading(state, isLoading: boolean) {
     state.loading = isLoading;
   },
-  setStatus(state, status: IStatus) {
+  setGroupStatus(state, status: IStatus) {
     if (status === 'PENDING') {
       state.status = status;
       state.loading = true;
@@ -38,23 +38,23 @@ export const mutations: MutationTree<GroupState> = {
       state.loading = false;
     }
   },
-  add(state, group: Group) {
+  addGroup(state, group: Group) {
     state.groups.push(group);
   },
-  update(state, group: Group) {
+  updateGroup(state, group: Group) {
     const index = findIndex(state.groups, { _id: group._id });
     if (index > -1) {
       const updatingGroup = { ...state.groups[index], ...group };
       state.groups.splice(index, 1, updatingGroup);
     }
   },
-  remove(state, groupId: string) {
+  removeGroup(state, groupId: string) {
     state.groups = state.groups.filter(g => g._id !== groupId);
   },
 };
 
 export const actions = {
-  clearError(context: any) {
+  clearGroupError(context: any) {
     context.commit('clearError');
   },
   async addGroup({ commit, state }: { commit: Commit, state: GroupState }, group: Group) {
@@ -62,14 +62,14 @@ export const actions = {
     await delay(1000);
     const index = findIndex(state.groups, { _id: group._id });
     if (index === -1) {
-      commit('add', group);
+      commit('addGroup', group);
     } else {
       commit('setError', { name: DUPLICATED_GROUP_ID_ERROR, code: 404 });
     }
     commit('setStatus', 'FINISHED');
   },
   removeGroup(context: any, groupId: string) {
-    context.commit('remove', groupId);
+    context.commit('removeGroup', groupId);
   },
 };
 
