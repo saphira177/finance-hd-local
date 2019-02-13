@@ -115,6 +115,7 @@ import InvoiceDialog from '@/components/InvoiceDialog.vue';
   },
 })
 export default class App extends Vue {
+  @Getter allGroups!: Array<Group>;
   open: boolean = false;
   fab: boolean = false;
 
