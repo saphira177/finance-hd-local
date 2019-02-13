@@ -2,11 +2,12 @@
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
 import {
-  ActionTree,
   MutationTree,
   GetterTree,
-  Action,
+  Commit,
 } from 'vuex';
+import { DUPLICATED_GROUP_ID_ERROR } from '@/constants';
+import delay from '@/utils/delay';
 
 export const initState: GroupState = {
   groups: [
@@ -16,27 +17,36 @@ export const initState: GroupState = {
 };
 
 export const mutations: MutationTree<GroupState> = {
-  add(state, group: Group) {
+  addGroup(state, group: Group) {
     state.groups.push(group);
   },
-  update(state, group: Group) {
+  updateGroup(state, group: Group) {
     const index = findIndex(state.groups, { _id: group._id });
     if (index > -1) {
       const updatingGroup = { ...state.groups[index], ...group };
       state.groups.splice(index, 1, updatingGroup);
     }
   },
-  remove(state, groupId: string) {
+  removeGroup(state, groupId: string) {
     state.groups = state.groups.filter(g => g._id !== groupId);
   },
 };
 
 export const actions = {
   addGroup(context: any, group: Group) {
-    context.commit('add', group);
+    context.commit('addGroup', group);
+    // commit('setGroupStatus', 'PENDING');
+    // await delay(1000);
+    // const index = findIndex(state.groups, { _id: group._id });
+    // if (index === -1) {
+    //   commit('addGroup', group);
+    // } else {
+    //   commit('setGroupError', { name: DUPLICATED_GROUP_ID_ERROR, code: 404 });
+    // }
+    // commit('setGroupStatus', 'FINISHED');
   },
   removeGroup(context: any, groupId: string) {
-    context.commit('remove', groupId);
+    context.commit('removeGroup', groupId);
   },
 };
 

@@ -78,6 +78,7 @@
         dark
         small
         color="indigo"
+        @click="showCreateInvoiceDialog"
       >
         <v-icon>add</v-icon>
       </v-btn>
@@ -98,6 +99,7 @@
         </v-fade-transition>
       </v-container>
     </v-content>
+    <invoice-dialog ref="invoiceDialog"></invoice-dialog>
   </v-app>
 </template>
 
@@ -105,15 +107,24 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
+import InvoiceDialog from '@/components/InvoiceDialog.vue';
 
-@Component
+@Component({
+  components: {
+    InvoiceDialog,
+  },
+})
 export default class App extends Vue {
   open: boolean = false;
   fab: boolean = false;
-  @Getter('allGroups') allGroups!: Array<Group>;
 
   toggleMenu() {
     this.open = !this.open;
+  }
+
+  showCreateInvoiceDialog() {
+    // @ts-ignore
+    this.$refs.invoiceDialog.show();
   }
 }
 </script>

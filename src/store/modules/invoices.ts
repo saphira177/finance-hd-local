@@ -35,31 +35,31 @@ export const initState: InvoiceState = {
 };
 
 export const mutations: MutationTree<InvoiceState> = {
-  add(state, invoice: Invoice) {
+  addInvoice(state, invoice: Invoice) {
     state.invoices.push(invoice);
   },
-  update(state, invoice: Invoice) {
+  updateInvoice(state, invoice: Invoice) {
     const index = findIndex(state.invoices, { _id: invoice._id });
     if (index > -1) {
       const updatingInvoice = { ...state.invoices[index], ...invoice };
       state.invoices.splice(index, 1, updatingInvoice);
     }
   },
-  remove(state, invoiceId: string) {
+  removeInvoice(state, invoiceId: string) {
     state.invoices = state.invoices.filter(i => i._id !== invoiceId);
   },
 };
 
 export const actions = {
   addInvoice(context: any, invoice: Invoice) {
-    const invoiceWithId = { ...invoice, _id: uuidv1() };
-    context.commit('add', invoiceWithId);
+    const invoiceWithId = { ...invoice, _id: uuidv1(), user: 'anonymous' };
+    context.commit('addInvoice', invoiceWithId);
   },
   updateInvoice(context: any, invoice: any) {
-    context.commit('update', invoice);
+    context.commit('updateInvoice', invoice);
   },
   removeInvoice(context: any, invoiceId: string) {
-    context.commit('remove', invoiceId);
+    context.commit('removeInvoice', invoiceId);
   },
 };
 
@@ -99,6 +99,13 @@ export const getters: GetterTree<InvoiceState, RootState> = {
     });
     return outcomes;
   },
+  categories: state => (group: string, type: IType) => (
+    _.chain(state.invoices)
+      .filter({ group, type })
+      .map('category')
+      .uniq()
+      .value()
+  ),
 };
 
 export default <Module<InvoiceState, RootState>> {

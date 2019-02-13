@@ -1,5 +1,12 @@
 type IType = 'in' | 'out';
 
+interface IError {
+  name: string;
+  code: number;
+}
+
+type IStatus = '' | 'PENDING' | 'FULFILLED' | 'FINISHED';
+
 interface RootState {
   version: string;
 }
@@ -32,7 +39,7 @@ interface Invoice {
   number: number;
   date: string;
   group: string;
-  user: string;
+  user?: string;
 }
 
 interface InvoiceState {

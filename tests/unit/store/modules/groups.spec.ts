@@ -21,33 +21,33 @@ describe('groups module', () => {
   describe('mutations', () => {
     describe('add', () => {
       it('should add new item to groups', () => {
-        mutations.add(state, { _id: 'newGroup' });
+        mutations.addGroup(state, { _id: 'newGroup' });
         expect(state.groups).toHaveLength(3);
       });
     });
 
     describe('update', () => {
       it('should update existing item', () => {
-        mutations.update(state, { _id: 'group2', name: 'Updated group 2' });
+        mutations.updateGroup(state, { _id: 'group2', name: 'Updated group 2' });
         expect(state.groups[1]).toEqual({
           _id: 'group2', name: 'Updated group 2', available: 18000,
         });
       });
 
       it('should not update if non-existing item', () => {
-        mutations.update(state, { _id: 'group0', name: 'Updated group 0' });
+        mutations.updateGroup(state, { _id: 'group0', name: 'Updated group 0' });
         expect(findIndex(state.groups, { name: 'Updated group 0' })).toEqual(-1);
       });
 
       it('should not update if missing _id field', () => {
-        mutations.update(state, { name: 'Updated group 0' });
+        mutations.updateGroup(state, { name: 'Updated group 0' });
         expect(findIndex(state.groups, { name: 'Updated group 0' })).toEqual(-1);
       });
     });
 
     describe('remove', () => {
       it('should remove group by id', () => {
-        mutations.remove(state, 'group1');
+        mutations.removeGroup(state, 'group1');
         expect(state.groups).toHaveLength(1);
         expect(map(state.groups, '_id')).toEqual(['group2']);
       });
@@ -62,15 +62,15 @@ describe('groups module', () => {
 
     describe('addGroup', () => {
       it('should commit add event', () => {
-        actions.addGroup({ commit }, { _id: 'newGroup', name: 'newGroup', available: 0 });
-        expect(commit).toHaveBeenCalledWith('add', { _id: 'newGroup', name: 'newGroup', available: 0 });
+        actions.addGroup({ commit, state }, { _id: 'newGroup', name: 'newGroup', available: 0 });
+        expect(commit).toHaveBeenCalledWith('addGroup', { _id: 'newGroup', name: 'newGroup', available: 0 });
       });
     });
 
     describe('removeGroup', () => {
       it('should commit add event', () => {
         actions.removeGroup({ commit }, 'groupId');
-        expect(commit).toHaveBeenCalledWith('remove', 'groupId');
+        expect(commit).toHaveBeenCalledWith('removeGroup', 'groupId');
       });
     });
   });

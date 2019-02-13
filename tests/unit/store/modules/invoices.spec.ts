@@ -29,35 +29,35 @@ describe('invoices module', () => {
   });
 
   describe('mutations', () => {
-    describe('add', () => {
+    describe('addInvoice', () => {
       it('should add new item to invoices', () => {
-        mutations.add(state, { _id: 'newInvoice' });
+        mutations.addInvoice(state, { _id: 'newInvoice' });
         expect(state.invoices).toHaveLength(5);
       });
     });
 
-    describe('update', () => {
+    describe('updateInvoice', () => {
       it('should update existing item', () => {
-        mutations.update(state, { _id: 'in2', name: 'Updated invoice 2' });
+        mutations.updateInvoice(state, { _id: 'in2', name: 'Updated invoice 2' });
         expect(state.invoices[1]).toEqual({
           _id: 'in2', name: 'Updated invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
         });
       });
 
       it('should not update if non-existing item', () => {
-        mutations.update(state, { _id: 'in0', name: 'Updated invoice 0' });
+        mutations.updateInvoice(state, { _id: 'in0', name: 'Updated invoice 0' });
         expect(findIndex(state.invoices, { name: 'Updated invoice 0' })).toEqual(-1);
       });
 
       it('should not update if missing _id field', () => {
-        mutations.update(state, { name: 'Updated invoice 0' });
+        mutations.updateInvoice(state, { name: 'Updated invoice 0' });
         expect(findIndex(state.invoices, { name: 'Updated invoice 0' })).toEqual(-1);
       });
     });
 
-    describe('remove', () => {
+    describe('removeInvoice', () => {
       it('should remove invoice by id', () => {
-        mutations.remove(state, 'in3');
+        mutations.removeInvoice(state, 'in3');
         expect(state.invoices).toHaveLength(3);
         expect(map(state.invoices, '_id')).toEqual(['in1', 'in2', 'in4']);
       });
@@ -84,7 +84,7 @@ describe('invoices module', () => {
         };
         actions.addInvoice({ commit }, invoice);
         expect(commit).toHaveBeenCalledWith(
-          'add',
+          'addInvoice',
           expect.objectContaining({
             name: 'New Invoice',
           }),
@@ -96,7 +96,7 @@ describe('invoices module', () => {
       it('should commit update event with invoice', () => {
         actions.updateInvoice({ commit }, { _id: 'in1', name: 'Updated Invoice ' });
         expect(commit).toHaveBeenCalledWith(
-          'update',
+          'updateInvoice',
           { _id: 'in1', name: 'Updated Invoice ' },
         );
       });
@@ -105,7 +105,7 @@ describe('invoices module', () => {
     describe('removeInvoice', () => {
       it('should commit remove event with invoice id', () => {
         actions.removeInvoice({ commit }, 'invoice1');
-        expect(commit).toHaveBeenCalledWith('remove', 'invoice1');
+        expect(commit).toHaveBeenCalledWith('removeInvoice', 'invoice1');
       });
     });
   });
