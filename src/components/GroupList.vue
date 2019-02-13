@@ -2,6 +2,7 @@
   <div>
     <v-list>
       <v-list-tile
+        class="group_item"
         v-for="item in allGroups"
         :key="item._id"
         @click="showActionMenu(item._id)"
@@ -15,7 +16,7 @@
       </v-list-tile>
     </v-list>
 
-    <v-bottom-actionMenu v-model="actionMenu">
+    <v-bottom-sheet v-model="actionMenu">
       <v-list class="pt-0" dense>
         <v-list-tile :to="`/groups/${selectedGroup}`">
           <v-list-tile-action>
@@ -44,7 +45,7 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-bottom-actionMenu>
+    </v-bottom-sheet>
 
     <v-dialog
       v-model="deleteConfirmDialog"
