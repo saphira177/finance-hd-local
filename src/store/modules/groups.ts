@@ -30,6 +30,14 @@ export const mutations: MutationTree<GroupState> = {
   removeGroup(state, groupId: string) {
     state.groups = state.groups.filter(g => g._id !== groupId);
   },
+  updateGroupByInvoice(state, invoice: Invoice) {
+    const { group: groupId, number: invoiceNumber, type } = invoice;
+    const group = find(state.groups, { _id: groupId });
+    if (group) {
+      const { available } = group;
+      group.available = type === 'in' ? available + invoiceNumber : available - invoiceNumber;
+    }
+  },
 };
 
 export const actions = {
