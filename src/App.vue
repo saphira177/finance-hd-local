@@ -69,14 +69,6 @@
         fab
         dark
         small
-        color="green"
-      >
-        <v-icon>edit</v-icon>
-      </v-btn>
-      <v-btn
-        fab
-        dark
-        small
         color="indigo"
         @click="showCreateInvoiceDialog"
       >
@@ -86,9 +78,10 @@
         fab
         dark
         small
-        color="red"
+        color="green"
+        @click="showCreateGroupDialog"
       >
-        <v-icon>delete</v-icon>
+        <v-icon>event</v-icon>
       </v-btn>
     </v-speed-dial>
 
@@ -100,6 +93,7 @@
       </v-container>
     </v-content>
     <invoice-dialog ref="invoiceDialog"></invoice-dialog>
+    <group-dialog ref="groupDialog" :groups="allGroups"></group-dialog>
   </v-app>
 </template>
 
@@ -108,10 +102,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { mapGetters } from 'vuex';
 import InvoiceDialog from '@/components/InvoiceDialog.vue';
+import GroupDialog from '@/components/GroupDialog.vue';
 
 @Component({
   components: {
     InvoiceDialog,
+    GroupDialog,
   },
 })
 export default class App extends Vue {
@@ -126,6 +122,11 @@ export default class App extends Vue {
   showCreateInvoiceDialog() {
     // @ts-ignore
     this.$refs.invoiceDialog.show();
+  }
+
+  showCreateGroupDialog() {
+    // @ts-ignore
+    this.$refs.groupDialog.show();
   }
 }
 </script>
