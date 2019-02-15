@@ -1,12 +1,24 @@
 /* eslint-disable no-param-reassign */
 import uuidv1 from 'uuid/v1';
-import _, { findIndex } from 'lodash';
+import _, { findIndex, map } from 'lodash';
 import {
   ActionTree,
   MutationTree,
   GetterTree,
   Module,
 } from 'vuex';
+
+const calculate = (
+  invoices: Invoice[],
+  group: string,
+  type: IType,
+  category?: string,
+) => _.chain(invoices)
+  .filter(category ? { group, type, category } : { group, type })
+  .map('number')
+  .reduce((sum, i) => sum + i)
+  .value()
+  || 0;
 
 export const initState: InvoiceState = {
   invoices: [
@@ -62,19 +74,20 @@ export const actions = {
   removeInvoice(context: any, invoiceId: string) {
     context.commit('removeInvoice', invoiceId);
   },
+  recalculateGroupAmount(context: any) {
+    const { groups: { groups } } = context.rootState;
+    const groupIds = map(groups, '_id');
+    const { invoices } = context.state;
+    groupIds.forEach((g) => {
+      const income = calculate(invoices, g, 'in');
+      const outcome = calculate(invoices, g, 'out');
+      context.commit('updateGroup', {
+        _id: g,
+        available: income - outcome,
+      });
+    });
+  },
 };
-
-const calculate = (
-  invoices: Invoice[],
-  group: string,
-  type: IType,
-  category?: string,
-) => _.chain(invoices)
-  .filter(category ? { group, type, category } : { group, type })
-  .map('number')
-  .reduce((sum, i) => sum + i)
-  .value()
-  || 0;
 
 export const getters: GetterTree<InvoiceState, RootState> = {
   invoicesByGroup: state => (group: string) => (

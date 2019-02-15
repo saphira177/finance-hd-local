@@ -99,8 +99,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-import { mapGetters } from 'vuex';
+import { Action, Getter } from 'vuex-class';
+import { ActionMethod, mapGetters } from 'vuex';
 import InvoiceDialog from '@/components/InvoiceDialog.vue';
 import GroupDialog from '@/components/GroupDialog.vue';
 
@@ -112,8 +112,13 @@ import GroupDialog from '@/components/GroupDialog.vue';
 })
 export default class App extends Vue {
   @Getter allGroups!: Array<Group>;
+  @Action recalculateGroupAmount!: ActionMethod;
   open: boolean = false;
   fab: boolean = false;
+
+  mounted() {
+    // this.recalculateGroupAmount();
+  }
 
   toggleMenu() {
     this.open = !this.open;
