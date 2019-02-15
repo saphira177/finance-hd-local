@@ -136,11 +136,11 @@
                     ></v-switch>
                   </v-flex>
                   <v-flex xs12>
-                    <v-select
+                    <v-combobox
                       v-model="selectedCategory"
                       :items="listCategories"
                       label="Choose a category"
-                    ></v-select>
+                    ></v-combobox>
                   </v-flex>
                   <v-flex xs12>
                     <v-btn
