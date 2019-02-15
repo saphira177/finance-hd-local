@@ -117,6 +117,7 @@ export default class App extends Vue {
   fab: boolean = false;
 
   mounted() {
+    // NOTE: Uncomment this line if want to re-calculate amount of all groups
     // this.recalculateGroupAmount();
   }
 
