@@ -54,6 +54,7 @@ export const actions = {
   addInvoice(context: any, invoice: Invoice) {
     const invoiceWithId = { ...invoice, _id: uuidv1(), user: 'anonymous' };
     context.commit('addInvoice', invoiceWithId);
+    context.commit('updateGroupByInvoice', invoiceWithId);
   },
   updateInvoice(context: any, invoice: any) {
     context.commit('updateInvoice', invoice);
