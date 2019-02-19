@@ -31,11 +31,11 @@ export const mutations: MutationTree<GroupState> = {
     state.groups = state.groups.filter(g => g._id !== groupId);
   },
   updateGroupByInvoice(state, invoice: Invoice) {
-    const { group: groupId, number: invoiceNumber, type } = invoice;
+    const { group: groupId, number: invoiceNumber } = invoice;
     const group = find(state.groups, { _id: groupId });
     if (group) {
       const { available } = group;
-      group.available = type === 'in' ? available + invoiceNumber : available - invoiceNumber;
+      group.available = available + invoiceNumber;
     }
   },
 };

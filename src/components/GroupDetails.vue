@@ -1,6 +1,8 @@
 <template>
   <div>
-    <p>{{item.name}} - {{toCurrency(item.available)}}</p>
+    <p class="title">{{item.name}} <span
+      :class="['headline', item.available >= 0 ? 'blue--text' : 'red--text']"
+    >{{toCurrency(item.available)}}</span></p>
     <v-list>
       <v-list-tile
         v-for="(outcome, category) in outcomes"

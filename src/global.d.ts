@@ -35,7 +35,6 @@ interface Invoice {
   _id?: string;
   name: string;
   category: string;
-  type: IType;
   number: number;
   date: string;
   group: string;

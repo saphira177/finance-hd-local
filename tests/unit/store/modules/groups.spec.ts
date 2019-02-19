@@ -8,6 +8,7 @@ import { Commit, ActionContext } from 'vuex';
 
 describe('groups module', () => {
   let state: GroupState;
+  const rootState: RootState = { version: '1' };
 
   beforeEach(() => {
     state = {
@@ -78,8 +79,7 @@ describe('groups module', () => {
   describe('getters', () => {
     describe('allGroups', () => {
       it('should list all groups', () => {
-        // @ts-ignore
-        expect(getters.allGroups(state)).toEqual([
+        expect(getters.allGroups(state, null, rootState, null)).toEqual([
           { _id: 'group1', name: 'Rent', available: 5000 },
           { _id: 'group2', name: 'Monthly', available: 18000 },
         ]);
@@ -88,8 +88,7 @@ describe('groups module', () => {
 
     describe('group', () => {
       it('should return group by id', () => {
-        // @ts-ignore
-        expect(getters.group(state)('group2')).toEqual(
+        expect(getters.group(state, null, rootState, null)('group2')).toEqual(
           { _id: 'group2', name: 'Monthly', available: 18000 },
         );
       });

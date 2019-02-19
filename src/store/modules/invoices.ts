@@ -14,7 +14,11 @@ const calculate = (
   type: IType,
   category?: string,
 ) => _.chain(invoices)
-  .filter(category ? { group, type, category } : { group, type })
+  .filter((invoice: Invoice) => {
+    const checkNumber = type === 'in' ? invoice.number > 0 : invoice.number <= 0;
+    const checkCategory = category ? invoice.category === category : true;
+    return invoice.group === group && checkNumber && checkCategory;
+  })
   .map('number')
   .reduce((sum, i) => sum + i)
   .value()
@@ -23,25 +27,25 @@ const calculate = (
 export const initState: InvoiceState = {
   invoices: [
     {
-      _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, date: '2018-12-01T09:00:00+07:00', group: 'group1', user: 'anonymous',
+      _id: 'in1', name: 'Invoice 1', category: 'study', number: -2000, date: '2018-12-01T09:00:00+07:00', group: 'group1', user: 'anonymous',
     },
     {
-      _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-02T09:00:00+07:00', group: 'group1', user: 'anonymous',
+      _id: 'in2', name: 'Invoice 2', category: 'study', number: -300, date: '2018-12-02T09:00:00+07:00', group: 'group1', user: 'anonymous',
     },
     {
-      _id: 'in3', name: 'Invoice 3', category: 'market', type: 'out', number: 425, date: '2018-12-11T09:00:00+07:00', group: 'group2', user: 'anonymous',
+      _id: 'in3', name: 'Invoice 3', category: 'market', number: -425, date: '2018-12-11T09:00:00+07:00', group: 'group2', user: 'anonymous',
     },
     {
-      _id: 'in4', name: 'Invoice 4', category: 'electric', type: 'out', number: 1830, date: '2018-12-17T09:00:00+07:00', group: 'group2', user: 'anonymous',
+      _id: 'in4', name: 'Invoice 4', category: 'electric', number: -1830, date: '2018-12-17T09:00:00+07:00', group: 'group2', user: 'anonymous',
     },
     {
-      _id: 'in5', name: 'Invoice 5', category: 'salary', type: 'in', number: 18000, date: '2018-12-01T08:00:00+07:00', group: 'group1', user: 'anonymous',
+      _id: 'in5', name: 'Invoice 5', category: 'salary', number: 18000, date: '2018-12-01T08:00:00+07:00', group: 'group1', user: 'anonymous',
     },
     {
-      _id: 'in6', name: 'Invoice 6', category: 'rent', type: 'in', number: 15000, date: '2018-12-04T09:00:00+07:00', group: 'group2', user: 'anonymous',
+      _id: 'in6', name: 'Invoice 6', category: 'rent', number: 15000, date: '2018-12-04T09:00:00+07:00', group: 'group2', user: 'anonymous',
     },
     {
-      _id: 'in7', name: 'Invoice 7', category: 'market', type: 'out', number: 1500, date: '2018-12-04T10:00:00+07:00', group: 'group1', user: 'anonymous',
+      _id: 'in7', name: 'Invoice 7', category: 'market', number: -1500, date: '2018-12-04T10:00:00+07:00', group: 'group1', user: 'anonymous',
     },
   ],
 };
@@ -99,7 +103,7 @@ export const getters: GetterTree<InvoiceState, RootState> = {
     const outcomes = {};
     const invoices = vuexGetters.invoicesByGroup(group);
     const categories = _.chain(invoices)
-      .filter({ type: 'out' })
+      .filter(i => i.number < 0)
       .map('category')
       .uniq()
       .value();
@@ -115,7 +119,10 @@ export const getters: GetterTree<InvoiceState, RootState> = {
   },
   categories: state => (group: string, type: IType) => (
     _.chain(state.invoices)
-      .filter({ group, type })
+      .filter((i: Invoice) => {
+        const checkType = type === 'in' ? i.number > 0 : i.number <= 0;
+        return i.group === group && checkType;
+      })
       .map('category')
       .uniq()
       .value()

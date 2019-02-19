@@ -388,11 +388,14 @@ export default class InvoiceDialog extends Vue {
 
   add() {
     this.dialog = false;
+    let amount = getFromView(this.invoiceAmount);
+    if (this.invoiceType === 'out') {
+      amount = -amount;
+    }
     const invoice: Invoice = {
       name: this.invoiceName,
       category: this.selectedCategory,
-      type: this.invoiceType,
-      number: getFromView(this.invoiceAmount),
+      number: amount,
       date: moment(this.invoiceDateTime).format(),
       group: this.selectedGroup,
     };
