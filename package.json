@@ -7,6 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "lint:show": "yarn lint --no-fix",
+    "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "@types/numeral": "^0.0.25",
     "@types/uuid": "^3.4.4",
     "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-e2e-cypress": "^3.4.0",
     "@vue/cli-plugin-eslint": "^3.2.1",
     "@vue/cli-plugin-pwa": "^3.2.0",
     "@vue/cli-plugin-typescript": "^3.2.0",
@@ -53,5 +55,10 @@
     "vue-template-compiler": "^2.5.17",
     "vuetify-loader": "^1.0.5"
   },
-  "homepage": "https://github.com/saphira177/finance-hd-local"
+  "homepage": "https://github.com/saphira177/finance-hd-local",
+  "jest": {
+    "testMatch": [
+      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+    ]
+  }
 }
