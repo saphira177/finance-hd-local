@@ -8,21 +8,22 @@ import { Commit } from 'vuex';
 
 describe('invoices module', () => {
   let state: InvoiceState;
+  const rootState: RootState = { version: '1' };
 
   beforeEach(() => {
     state = {
       invoices: [
         {
-          _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+          _id: 'in1', name: 'Invoice 1', category: 'study', number: -2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
         },
         {
-          _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+          _id: 'in2', name: 'Invoice 2', category: 'study', number: -300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
         },
         {
-          _id: 'in3', name: 'Invoice 3', category: 'market', type: 'out', number: 425, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
+          _id: 'in3', name: 'Invoice 3', category: 'market', number: -425, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
         },
         {
-          _id: 'in4', name: 'Invoice 4', category: 'electric', type: 'out', number: 1830, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
+          _id: 'in4', name: 'Invoice 4', category: 'electric', number: -1830, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
         },
       ],
     };
@@ -40,7 +41,7 @@ describe('invoices module', () => {
       it('should update existing item', () => {
         mutations.updateInvoice(state, { _id: 'in2', name: 'Updated invoice 2' });
         expect(state.invoices[1]).toEqual({
-          _id: 'in2', name: 'Updated invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+          _id: 'in2', name: 'Updated invoice 2', category: 'study', number: -300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
         });
       });
 
@@ -76,7 +77,6 @@ describe('invoices module', () => {
         const invoice: Invoice = {
           name: 'New Invoice',
           category: '',
-          type: 'in',
           number: 0,
           date: '',
           group: '',
@@ -85,6 +85,12 @@ describe('invoices module', () => {
         actions.addInvoice({ commit }, invoice);
         expect(commit).toHaveBeenCalledWith(
           'addInvoice',
+          expect.objectContaining({
+            name: 'New Invoice',
+          }),
+        );
+        expect(commit).toHaveBeenCalledWith(
+          'updateGroupByInvoice',
           expect.objectContaining({
             name: 'New Invoice',
           }),
@@ -113,13 +119,12 @@ describe('invoices module', () => {
   describe('getters', () => {
     describe('invoicesByGroup', () => {
       it('should list all invoices in a group', () => {
-        // @ts-ignore
-        expect(getters.invoicesByGroup(state)('group1')).toEqual([
+        expect(getters.invoicesByGroup(state, null, rootState, null)('group1')).toEqual([
           {
-            _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            _id: 'in1', name: 'Invoice 1', category: 'study', number: -2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
           },
           {
-            _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            _id: 'in2', name: 'Invoice 2', category: 'study', number: -300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
           },
         ]);
       });
@@ -129,49 +134,43 @@ describe('invoices module', () => {
       it('should return sum of all income in a group', () => {
         state.invoices = [
           {
-            _id: 'in1', name: 'Invoice 1', category: 'study', type: 'in', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            _id: 'in1', name: 'Invoice 1', category: 'study', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
           },
           {
-            _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 1000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            _id: 'in2', name: 'Invoice 2', category: 'study', number: -1000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
           },
           {
-            _id: 'in3', name: 'Invoice 3', category: 'study', type: 'in', number: 3000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            _id: 'in3', name: 'Invoice 3', category: 'study', number: 3000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
           },
         ];
-        // @ts-ignore
-        expect(getters.totalIncome(state)('group1')).toEqual(5000);
+        expect(getters.totalIncome(state, null, rootState, null)('group1')).toEqual(5000);
       });
 
       it('should return 0 if no group', () => {
-        // @ts-ignore
-        expect(getters.totalIncome(state)('not-existed-group')).toEqual(0);
+        expect(getters.totalIncome(state, null, rootState, null)('not-existed-group')).toEqual(0);
       });
 
       it('should return 0 if no income', () => {
-        // @ts-ignore
-        expect(getters.totalIncome(state)('group1')).toEqual(0);
+        expect(getters.totalIncome(state, null, rootState, null)('group1')).toEqual(0);
       });
     });
 
     describe('totalOutcome', () => {
       it('should return sum of all outcome in a group', () => {
-        // @ts-ignore
-        expect(getters.totalOutcome(state)('group1')).toEqual(2300);
+        expect(getters.totalOutcome(state, null, rootState, null)('group1')).toEqual(-2300);
       });
 
       it('should return 0 if no group', () => {
-        // @ts-ignore
-        expect(getters.totalOutcome(state)('not-existed-group')).toEqual(0);
+        expect(getters.totalOutcome(state, null, rootState, null)('not-existed-group')).toEqual(0);
       });
 
       it('should return 0 if no outcome', () => {
         state.invoices = [
           {
-            _id: 'in1', name: 'Invoice 1', category: 'study', type: 'in', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            _id: 'in1', name: 'Invoice 1', category: 'study', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
           },
         ];
-        // @ts-ignore
-        expect(getters.totalOutcome(state)('group1')).toEqual(0);
+        expect(getters.totalOutcome(state, null, rootState, null)('group1')).toEqual(0);
       });
     });
 
@@ -180,21 +179,55 @@ describe('invoices module', () => {
         const vuexGetters = {
           invoicesByGroup: jest.fn().mockReturnValue([
             {
-              _id: 'in1', name: 'Invoice 1', category: 'study', type: 'out', number: 2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+              _id: 'in1', name: 'Invoice 1', category: 'study', number: -2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
             },
             {
-              _id: 'in2', name: 'Invoice 2', category: 'study', type: 'out', number: 300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+              _id: 'in2', name: 'Invoice 2', category: 'study', number: -300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
             },
             {
-              _id: 'in3', name: 'Invoice 3', category: 'market', type: 'out', number: 2500, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+              _id: 'in3', name: 'Invoice 3', category: 'market', number: -2500, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
             },
           ]),
         };
-        // @ts-ignore
-        expect(getters.outcomeByCategory(state, vuexGetters)('group1')).toEqual({
-          study: 2300,
-          market: 2500,
+        expect(getters.outcomeByCategory(state, vuexGetters, rootState, null)('group1')).toEqual({
+          study: -2300,
+          market: -2500,
         });
+      });
+    });
+
+    describe('categories', () => {
+      beforeEach(() => {
+        state.invoices = [
+          {
+            _id: 'in1', name: 'Invoice 1', category: 'study', number: -2000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+          },
+          {
+            _id: 'in2', name: 'Invoice 2', category: 'study', number: -300, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+          },
+          {
+            _id: 'in3', name: 'Invoice 3', category: 'market', number: -425, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
+          },
+          {
+            _id: 'in4', name: 'Invoice 4', category: 'electric', number: -1830, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
+          },
+          {
+            _id: 'in5', name: 'Invoice 5', category: 'salary', number: 10000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+          },
+          {
+            _id: 'in6', name: 'Invoice 6', category: 'extra', number: 5000, date: '2018-12-08T00:00:00.000Z', group: 'group2', user: 'dungla4',
+          },
+        ];
+      });
+
+      it('should return all income categories', () => {
+        expect(getters.categories(state, null, rootState, null)('group1', 'in')).toEqual(['salary']);
+        expect(getters.categories(state, null, rootState, null)('group2', 'in')).toEqual(['extra']);
+      });
+
+      it('should return all outcome categories', () => {
+        expect(getters.categories(state, null, rootState, null)('group1', 'out')).toEqual(['study']);
+        expect(getters.categories(state, null, rootState, null)('group2', 'out')).toEqual(['market', 'electric']);
       });
     });
   });
