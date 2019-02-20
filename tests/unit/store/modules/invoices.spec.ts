@@ -187,11 +187,15 @@ describe('invoices module', () => {
             {
               _id: 'in3', name: 'Invoice 3', category: 'market', number: -2500, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
             },
+            {
+              _id: 'in4', name: 'Invoice 4', category: 'salary', number: 5000, date: '2018-12-08T00:00:00.000Z', group: 'group1', user: 'dungla4',
+            },
           ]),
         };
         expect(getters.outcomeByCategory(state, vuexGetters, rootState, null)('group1')).toEqual({
           study: -2300,
           market: -2500,
+          salary: 5000,
         });
       });
     });

@@ -103,7 +103,6 @@ export const getters: GetterTree<InvoiceState, RootState> = {
     const outcomes = {};
     const invoices = vuexGetters.invoicesByGroup(group);
     const categories = _.chain(invoices)
-      .filter(i => i.number < 0)
       .map('category')
       .uniq()
       .value();
