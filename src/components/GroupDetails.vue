@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="group-details">
     <p class="title">{{item.name}} <span
       :class="['headline', item.available >= 0 ? 'blue--text' : 'red--text']"
     >{{toCurrency(item.available)}}</span></p>
@@ -12,7 +12,9 @@
           <v-list-tile-title>{{category}}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-list-tile-action-text>{{toCurrency(outcome)}}</v-list-tile-action-text>
+          <v-list-tile-action-text
+             :class="[outcome >= 0 ? 'blue--text' : 'red--text']"
+          >{{toCurrency(outcome)}}</v-list-tile-action-text>
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
