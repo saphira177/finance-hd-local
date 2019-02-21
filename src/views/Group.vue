@@ -1,7 +1,7 @@
 <template>
   <GroupDetails
     :item="group(this.$route.params.groupId)"
-    :outcomes="outcomeByCategory(this.$route.params.groupId)"
+    :categoriesAmount="summaryByCategories(this.$route.params.groupId)"
   ></GroupDetails>
 </template>
 
@@ -18,6 +18,6 @@ import GroupDetails from '@/components/GroupDetails.vue';
 })
 export default class Group extends Vue {
   @Getter('group') group!: Function;
-  @Getter('outcomeByCategory') outcomeByCategory!: Function;
+  @Getter('summaryByCategories') summaryByCategories!: Function;
 }
 </script>

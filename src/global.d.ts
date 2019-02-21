@@ -46,6 +46,7 @@ interface InvoiceState {
 }
 
 
-interface OutcomeCategories {
-  [key: string] : number;
+interface CategoryAmount {
+  name: string;
+  amount: number;
 }
