@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import uuidv1 from 'uuid/v1';
-import _, { findIndex, map } from 'lodash';
+import _, { findIndex, map, orderBy } from 'lodash';
 import {
   ActionTree,
   MutationTree,
@@ -99,22 +99,25 @@ export const getters: GetterTree<InvoiceState, RootState> = {
   ),
   totalIncome: state => (group: string) => calculate(state.invoices, group, 'in'),
   totalOutcome: state => (group: string) => calculate(state.invoices, group, 'out'),
-  outcomeByCategory: (state, vuexGetters: any) => (group: string) => {
-    const outcomes = {};
+  summaryByCategories: (state, vuexGetters: any) => (group: string) => {
     const invoices = vuexGetters.invoicesByGroup(group);
     const categories = _.chain(invoices)
       .map('category')
       .uniq()
       .value();
-    categories.forEach((category) => {
-      const outcome = _.chain(invoices)
+    let amounts = categories.map((category) => {
+      const amount = _.chain(invoices)
         .filter({ category })
         .map('number')
         .reduce((sum, i) => sum + i)
         .value();
-      _.set(outcomes, category, outcome);
+      return {
+        name: category,
+        amount,
+      };
     });
-    return outcomes;
+    amounts = orderBy(amounts, [i => i.amount >= 0, 'name'], ['desc', 'asc']);
+    return amounts;
   },
   categories: state => (group: string, type: IType) => (
     _.chain(state.invoices)

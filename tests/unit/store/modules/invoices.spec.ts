@@ -174,7 +174,7 @@ describe('invoices module', () => {
       });
     });
 
-    describe('outcomeByCategory', () => {
+    describe('summaryByCategories', () => {
       it('should calculate outcome by categories', () => {
         const vuexGetters = {
           invoicesByGroup: jest.fn().mockReturnValue([
@@ -192,11 +192,11 @@ describe('invoices module', () => {
             },
           ]),
         };
-        expect(getters.outcomeByCategory(state, vuexGetters, rootState, null)('group1')).toEqual({
-          study: -2300,
-          market: -2500,
-          salary: 5000,
-        });
+        expect(getters.summaryByCategories(state, vuexGetters, rootState, null)('group1')).toEqual([
+          { name: 'salary', amount: 5000 },
+          { name: 'market', amount: -2500 },
+          { name: 'study', amount: -2300 },
+        ]);
       });
     });
 

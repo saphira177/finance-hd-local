@@ -5,16 +5,16 @@
     >{{toCurrency(item.available)}}</span></p>
     <v-list>
       <v-list-tile
-        v-for="(outcome, category) in outcomes"
-        :key="category"
+        v-for="category in categoriesAmount"
+        :key="category.name"
       >
         <v-list-tile-content>
-          <v-list-tile-title>{{category}}</v-list-tile-title>
+          <v-list-tile-title>{{category.name}}</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
           <v-list-tile-action-text
-             :class="[outcome >= 0 ? 'blue--text' : 'red--text']"
-          >{{toCurrency(outcome)}}</v-list-tile-action-text>
+             :class="[category.amount >= 0 ? 'blue--text' : 'red--text']"
+          >{{toCurrency(category.amount)}}</v-list-tile-action-text>
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
@@ -30,10 +30,10 @@ export default class GroupDetails extends Vue {
   @Prop({
     default: () => ({ _id: '', name: '', available: -1 }),
   }) public item!: Group;
-  @Prop() public outcomes!: OutcomeCategories;
+  @Prop() public categoriesAmount!: Array<CategoryAmount>;
 
-  public toCurrency(outcome: number): string {
-    return displayMoney(outcome);
+  public toCurrency(amount: number): string {
+    return displayMoney(amount);
   }
 }
 </script>
