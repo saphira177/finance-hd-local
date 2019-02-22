@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="dialog" content-class="create-group-dialog">
     <v-form ref="form" lazy-validation>
       <v-card>
         <v-card-title>
