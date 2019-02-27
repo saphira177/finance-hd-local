@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+    class="invoice-table"
     :headers="headers"
     :items="invoicesView"
     :expand="expand"
