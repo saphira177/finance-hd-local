@@ -1,4 +1,5 @@
 // https://docs.cypress.io/api/introduction/api.html
+const { formatData } = require('../support/fixtures');
 
 describe('Group Details Page', () => {
   it('should contain all categories information of a group', () => {
@@ -13,27 +14,34 @@ describe('Group Details Page', () => {
   });
 
   it('should order categories by amount and name', () => {
+    const expectedData = formatData([
+      ['  name  ', '  amount  ', '  class   '],
+      [' salary ', '18.000.000', 'blue--text'],
+      [' market ', '-1.500.000', 'red--text '],
+      [' study  ', '-2.300.000', 'red--text '],
+    ]);
     cy.visit('/#/groups/group1');
     cy.get('.group-details')
       .find('div[role=listitem]')
       .should(($listItem) => {
-        let actionTextEle;
-        expect($listItem.eq(0).find('.v-list__tile__title')).to.contain('salary');
-        actionTextEle = $listItem.eq(0).find('.v-list__tile__action-text');
-        expect(actionTextEle).to.contain('18.000.000');
-        expect(actionTextEle[0].className).to.match(/blue--text/);
-        expect($listItem.eq(1).find('.v-list__tile__title')).to.contain('market');
-        actionTextEle = $listItem.eq(1).find('.v-list__tile__action-text');
-        expect(actionTextEle).to.contain('-1.500.000');
-        expect(actionTextEle[0].className).to.match(/red--text/);
-        expect($listItem.eq(2).find('.v-list__tile__title')).to.contain('study');
-        actionTextEle = $listItem.eq(2).find('.v-list__tile__action-text');
-        expect(actionTextEle).to.contain('-2.300.000');
-        expect(actionTextEle[0].className).to.match(/red--text/);
+        for (let i = 0; i < 3; i += 1) {
+          expect($listItem.eq(i).find('.v-list__tile__title')).to.contain(expectedData.rows[i].name);
+          const actionTextEle = $listItem.eq(i).find('.v-list__tile__action-text');
+          expect(actionTextEle).to.contain(expectedData.rows[i].amount);
+          const reg = new RegExp(expectedData.rows[i].class);
+          expect(actionTextEle[0].className).to.match(reg);
+        }
       });
   });
 
   it('should display all invoices of group in table', () => {
+    const expectedData = formatData([
+      ['  name   ', '  amount  ', '      date      ', 'category'],
+      ['Invoice 1', '-2.000.000', '01-12-2018 09:00', '  study '],
+      ['Invoice 2', '  -300.000', '02-12-2018 09:00', '  study '],
+      ['Invoice 5', '18.000.000', '01-12-2018 08:00', '  salary'],
+      ['Invoice 7', '-1.500.000', '04-12-2018 10:00', '  market'],
+    ]);
     cy.visit('/#/groups/group1');
     cy.get('.group-details')
       .find('.invoice-table thead th[role=columnheader]')
@@ -49,27 +57,14 @@ describe('Group Details Page', () => {
       .not('.v-datatable__expand-row')
       .should('have.length', 4)
       .and(($rows) => {
-        let cols = $rows.eq(0).find('td');
-        expect(cols).to.have.lengthOf(4);
-        expect(cols.eq(0)).to.contain('Invoice 1');
-        expect(cols.eq(1)).to.contain('-2.000.000');
-        expect(cols.eq(2)).to.contain('01-12-2018 09:00');
-        expect(cols.eq(3)).to.contain('study');
-        cols = $rows.eq(1).find('td');
-        expect(cols.eq(0)).to.contain('Invoice 2');
-        expect(cols.eq(1)).to.contain('-300.000');
-        expect(cols.eq(2)).to.contain('02-12-2018 09:00');
-        expect(cols.eq(3)).to.contain('study');
-        cols = $rows.eq(2).find('td');
-        expect(cols.eq(0)).to.contain('Invoice 5');
-        expect(cols.eq(1)).to.contain('18.000.000');
-        expect(cols.eq(2)).to.contain('01-12-2018 08:00');
-        expect(cols.eq(3)).to.contain('salary');
-        cols = $rows.eq(3).find('td');
-        expect(cols.eq(0)).to.contain('Invoice 7');
-        expect(cols.eq(1)).to.contain('-1.500.000');
-        expect(cols.eq(2)).to.contain('04-12-2018 10:00');
-        expect(cols.eq(3)).to.contain('market');
+        for (let i = 0; i < 4; i += 1) {
+          const cols = $rows.eq(i).find('td');
+          expect(cols).to.have.lengthOf(4);
+          expect(cols.eq(0)).to.contain(expectedData.rows[i].name);
+          expect(cols.eq(1)).to.contain(expectedData.rows[i].amount);
+          expect(cols.eq(2)).to.contain(expectedData.rows[i].date);
+          expect(cols.eq(3)).to.contain(expectedData.rows[i].category);
+        }
       });
   });
 });
