@@ -1,6 +1,6 @@
 <template>
   <GroupDetails
-    :item="group(this.$route.params.groupId)"
+    :group="group(this.$route.params.groupId)"
     :categoriesAmount="summaryByCategories(this.$route.params.groupId)"
   ></GroupDetails>
 </template>
