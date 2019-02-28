@@ -1,6 +1,8 @@
 // https://docs.cypress.io/api/introduction/api.html
 const { formatData } = require('../support/fixtures');
 
+const getStore = () => cy.window().its('app.$store');
+
 describe('Group Details Page', () => {
   it('should contain all categories information of a group', () => {
     cy.visit('/#/groups/group1');
@@ -66,5 +68,61 @@ describe('Group Details Page', () => {
           expect(cols.eq(3)).to.contain(expectedData.rows[i].category);
         }
       });
+  });
+
+  describe('list invoices', () => {
+    it('should sort ascending/descending by amount', () => {
+      cy.visit('/#/groups/group1');
+      // ascending
+      cy.get('.group-details')
+        .find('.invoice-table thead th[role=columnheader]')
+        .eq(1)
+        .click();
+      const expectedAscData = formatData([
+        ['  name   ', '  amount  ', '      date      ', 'category'],
+        ['Invoice 1', '-2.000.000', '01-12-2018 09:00', '  study '],
+        ['Invoice 7', '-1.500.000', '04-12-2018 10:00', '  market'],
+        ['Invoice 2', '  -300.000', '02-12-2018 09:00', '  study '],
+        ['Invoice 5', '18.000.000', '01-12-2018 08:00', '  salary'],
+      ]);
+      cy.get('.group-details')
+        .find('.invoice-table tbody tr')
+        .not('.v-datatable__expand-row')
+        .should(($rows) => {
+          for (let i = 0; i < 4; i += 1) {
+            const cols = $rows.eq(i).find('td');
+            expect(cols).to.have.lengthOf(4);
+            expect(cols.eq(0)).to.contain(expectedAscData.rows[i].name);
+            expect(cols.eq(1)).to.contain(expectedAscData.rows[i].amount);
+            expect(cols.eq(2)).to.contain(expectedAscData.rows[i].date);
+            expect(cols.eq(3)).to.contain(expectedAscData.rows[i].category);
+          }
+        });
+      // descending
+      cy.get('.group-details')
+        .find('.invoice-table thead th[role=columnheader]')
+        .eq(1)
+        .click();
+      const expectedDescData = formatData([
+        ['  name   ', '  amount  ', '      date      ', 'category'],
+        ['Invoice 5', '18.000.000', '01-12-2018 08:00', '  salary'],
+        ['Invoice 2', '  -300.000', '02-12-2018 09:00', '  study '],
+        ['Invoice 7', '-1.500.000', '04-12-2018 10:00', '  market'],
+        ['Invoice 1', '-2.000.000', '01-12-2018 09:00', '  study '],
+      ]);
+      cy.get('.group-details')
+        .find('.invoice-table tbody tr')
+        .not('.v-datatable__expand-row')
+        .should(($rows) => {
+          for (let i = 0; i < 4; i += 1) {
+            const cols = $rows.eq(i).find('td');
+            expect(cols).to.have.lengthOf(4);
+            expect(cols.eq(0)).to.contain(expectedDescData.rows[i].name);
+            expect(cols.eq(1)).to.contain(expectedDescData.rows[i].amount);
+            expect(cols.eq(2)).to.contain(expectedDescData.rows[i].date);
+            expect(cols.eq(3)).to.contain(expectedDescData.rows[i].category);
+          }
+        });
+    });
   });
 });
